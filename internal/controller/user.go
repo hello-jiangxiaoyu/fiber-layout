@@ -20,3 +20,9 @@ func GetErrorResponse(c *fiber.Ctx) error {
 	}
 	return errors.New("my error response")
 }
+
+func GetPanic(c *fiber.Ctx) error {
+	var pt *int
+	*pt = 1
+	return c.Status(fiber.StatusOK).SendString("ok")
+}

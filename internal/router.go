@@ -15,10 +15,11 @@ func NewRouter() *fiber.App {
 		AppName:       "v0.0.1",
 	})
 
-	app.Use(middleware.GenerateRequestID(), middleware.RequestLogger())
+	app.Use(middleware.Recovery(), middleware.GenerateRequestID(), middleware.RequestLogger())
 	app.Get("/hello", controller.SayHello)
 	app.Get("/error", controller.GetErrorResponse)
 	app.Post("/body", controller.GetPostBody)
+	app.Get("/panic", controller.GetPanic)
 
 	app.Use(func(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"msg": "no such route"})
