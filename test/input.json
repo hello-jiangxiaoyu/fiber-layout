@@ -1,0 +1,25 @@
+{
+  "kind": "AdmissionReview",
+  "request": {
+    "kind": {
+      "kind": "Pod",
+      "version": "v1"
+    },
+    "object": {
+      "metadata": {
+        "name": "myapp",
+        "labels": {
+          "domain": "moelove-opa"
+        }
+      },
+      "spec": {
+        "containers": [
+          {
+            "image": "alpine",
+            "name": "alpine"
+          }
+        ]
+      }
+    }
+  }
+}
