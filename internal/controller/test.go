@@ -2,6 +2,7 @@ package controller
 
 import (
 	"errors"
+	"fiber/client"
 	"fiber/internal/endpoint/resp"
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
@@ -15,7 +16,7 @@ var validate = validator.New()
 // @Description	返回hello world，添加自定义响应头
 // @Tags		fiber-layout
 // @Success		200
-// @Router		/hello [get]
+// @Router		/ [get]
 func SayHello(c *fiber.Ctx) error {
 	c.Append("Append-Header", "Fiber-Layout")
 	return resp.SuccessWithData(c, fiber.Map{"hello": "fiber"})
@@ -109,4 +110,37 @@ func BindJson(c *fiber.Ctx) error {
 	}
 
 	return c.Status(fiber.StatusOK).JSON(p)
+}
+
+// GetFastHttpRequest
+// @Summary	send fast http request
+// @Schemes
+// @Description	发送fast http请求
+// @Tags		fiber-layout
+// @Success		200
+// @Router		/fast [get]
+func GetFastHttpRequest(c *fiber.Ctx) error {
+	var res any
+	if err := client.Get("http://localhost:8000/", &res); err != nil {
+		return err
+	}
+	return c.Status(fiber.StatusOK).JSON(res)
+}
+
+// PostFastHttpRequest
+// @Summary	send fast http get request
+// @Schemes
+// @Description	发送fast http get请求
+// @Tags		fiber-layout
+// @Success		200
+// @Router		/fast [post]
+func PostFastHttpRequest(c *fiber.Ctx) error {
+	var res any
+	data := map[string]any{
+		"post": "data",
+	}
+	if err := client.Post("http://localhost:8000/body", &data, &res); err != nil {
+		return err
+	}
+	return c.Status(fiber.StatusOK).JSON(res)
 }

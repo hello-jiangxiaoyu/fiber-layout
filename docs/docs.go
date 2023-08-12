@@ -19,6 +19,20 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/": {
+            "get": {
+                "description": "返回hello world，添加自定义响应头",
+                "tags": [
+                    "fiber-layout"
+                ],
+                "summary": "say hello",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
         "/args/{arg}": {
             "get": {
                 "description": "返回路劲参数",
@@ -107,13 +121,25 @@ const docTemplate = `{
                 }
             }
         },
-        "/hello": {
+        "/fast": {
             "get": {
-                "description": "返回hello world，添加自定义响应头",
+                "description": "发送fast http请求",
                 "tags": [
                     "fiber-layout"
                 ],
-                "summary": "say hello",
+                "summary": "send fast http request",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            },
+            "post": {
+                "description": "发送fast http get请求",
+                "tags": [
+                    "fiber-layout"
+                ],
+                "summary": "send fast http get request",
                 "responses": {
                     "200": {
                         "description": "OK"

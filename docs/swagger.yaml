@@ -5,6 +5,15 @@ info:
   title: fiber-layout 接口文档
   version: "1.0"
 paths:
+  /:
+    get:
+      description: 返回hello world，添加自定义响应头
+      responses:
+        "200":
+          description: OK
+      summary: say hello
+      tags:
+      - fiber-layout
   /args/{arg}:
     get:
       description: 返回路劲参数
@@ -62,13 +71,21 @@ paths:
       summary: path arg
       tags:
       - fiber-layout
-  /hello:
+  /fast:
     get:
-      description: 返回hello world，添加自定义响应头
+      description: 发送fast http请求
       responses:
         "200":
           description: OK
-      summary: say hello
+      summary: send fast http request
+      tags:
+      - fiber-layout
+    post:
+      description: 发送fast http get请求
+      responses:
+        "200":
+          description: OK
+      summary: send fast http get request
       tags:
       - fiber-layout
   /panic:

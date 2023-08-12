@@ -12,7 +12,7 @@ func startServer() {
 	}
 
 	app := internal.NewRouter()
-	if err := app.Listen(":3000"); err != nil {
+	if err := app.Listen(":8000"); err != nil {
 		fmt.Println("server run err: ", err)
 		os.Exit(ExitServer)
 		return
