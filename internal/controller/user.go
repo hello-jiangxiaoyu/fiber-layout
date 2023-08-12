@@ -14,7 +14,7 @@ func GetPostBody(c *fiber.Ctx) error {
 	return c.Send(c.Body())
 }
 
-func GetErrorResponse(c *fiber.Ctx) error {
+func GetError(c *fiber.Ctx) error {
 	if err := c.Status(fiber.StatusOK).SendString("error"); err != nil {
 		return err
 	}

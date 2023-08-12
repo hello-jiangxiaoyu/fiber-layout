@@ -8,10 +8,10 @@ import (
 
 func GenerateRequestID() fiber.Handler {
 	return func(c *fiber.Ctx) error {
-		requestID, ok := c.GetReqHeaders()["X-Request-ID"]
+		requestID, ok := c.GetReqHeaders()[fiber.HeaderXRequestID]
 		if !ok {
 			requestID = strconv.Itoa(rand.Int())
-			c.Set("X-Request-ID", requestID)
+			c.Set(fiber.HeaderXRequestID, requestID)
 		}
 		return c.Next()
 	}

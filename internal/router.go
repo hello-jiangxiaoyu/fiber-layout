@@ -4,6 +4,7 @@ import (
 	"fiber/internal/controller"
 	"fiber/internal/middleware"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/pprof"
 )
 
 func NewRouter() *fiber.App {
@@ -15,9 +16,11 @@ func NewRouter() *fiber.App {
 		AppName:       "v0.0.1",
 	})
 
+	app.Use(pprof.New(pprof.Config{Prefix: "/v1"})) // "/v1/debug/pprof/"
+
 	app.Use(middleware.Recovery(), middleware.GenerateRequestID(), middleware.RequestLogger())
 	app.Get("/hello", controller.SayHello)
-	app.Get("/error", controller.GetErrorResponse)
+	app.Get("/error", controller.GetError)
 	app.Post("/body", controller.GetPostBody)
 	app.Get("/panic", controller.GetPanic)
 
