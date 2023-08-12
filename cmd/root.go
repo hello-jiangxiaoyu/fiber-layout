@@ -62,7 +62,6 @@ func init() {
 }
 
 func initConfig() {
-	fmt.Println("init config: ", cfgFile)
 }
 
 func Execute() {

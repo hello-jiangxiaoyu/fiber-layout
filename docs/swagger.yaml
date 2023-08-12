@@ -1,0 +1,44 @@
+info:
+  contact: {}
+  license:
+    name: MIT
+  title: fiber-layout 接口文档
+  version: "1.0"
+paths:
+  /body:
+    post:
+      description: 直接返回请求body内容
+      responses:
+        "200":
+          description: OK
+      summary: test post body
+      tags:
+      - fiber-layout
+  /error:
+    get:
+      description: handler返回错误，打印access日志
+      responses:
+        "200":
+          description: OK
+      summary: test error
+      tags:
+      - fiber-layout
+  /hello:
+    get:
+      description: 返回hello world，添加自定义响应头
+      responses:
+        "200":
+          description: OK
+      summary: say hello
+      tags:
+      - fiber-layout
+  /panic:
+    get:
+      description: 空指针panic，测试是否能recover，并返回响应
+      responses:
+        "200":
+          description: OK
+      summary: test panic
+      tags:
+      - fiber-layout
+swagger: "2.0"
