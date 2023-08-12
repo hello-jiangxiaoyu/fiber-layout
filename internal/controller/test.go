@@ -2,8 +2,8 @@ package controller
 
 import (
 	"errors"
-	"fiber/client"
 	"fiber/internal/endpoint/resp"
+	"fiber/pkg/client"
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
 )

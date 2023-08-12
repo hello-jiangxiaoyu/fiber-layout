@@ -1,7 +1,7 @@
 package global
 
 import (
-	"fiber/pkg/conf"
+	"fiber/deploy/conf"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
 )

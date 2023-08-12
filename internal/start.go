@@ -2,7 +2,7 @@ package internal
 
 import (
 	"errors"
-	"fiber/pkg/conf"
+	"fiber/deploy/conf"
 	"fiber/pkg/global"
 	"fiber/pkg/log"
 	"fiber/pkg/orm"
