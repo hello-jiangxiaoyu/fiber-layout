@@ -26,14 +26,14 @@ func RequestLogger() fiber.Handler {
 }
 
 func zapLog(c *fiber.Ctx, start time.Time, err any) {
-	code := c.Get("code")
-	requestID := c.Get("X-Request-ID")
+	code := c.Locals("code").(int)
+	requestID := c.Locals(fiber.HeaderXRequestID).(string)
 	global.AccessLog.Info("",
 		zap.String("ts", time.Now().Format(time.RFC3339)),
 		zap.Int("pid", os.Getpid()),
 		zap.String("request_id", requestID),
 		zap.Int("status", c.Response().StatusCode()),
-		zap.String("code", code),
+		zap.Int("code", code),
 		zap.String("method", c.Method()),
 		zap.String("path", c.Path()),
 		zap.String("route", c.Route().Path),

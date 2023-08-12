@@ -20,6 +20,7 @@ type ArrayResponse struct {
 }
 
 func response(c *fiber.Ctx, code int, errCode uint, msg string, data any, total int, isArray bool) error {
+	c.Locals("code", code)
 	if isArray {
 		return c.Status(code).JSON(&ArrayResponse{Code: errCode, Msg: msg, Total: total, Data: data})
 	}

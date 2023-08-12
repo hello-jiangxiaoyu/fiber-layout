@@ -13,6 +13,7 @@ func GenerateRequestID() fiber.Handler {
 			requestID = strconv.Itoa(rand.Int())
 			c.Set(fiber.HeaderXRequestID, requestID)
 		}
+		c.Locals(fiber.HeaderXRequestID, requestID)
 		return c.Next()
 	}
 }
