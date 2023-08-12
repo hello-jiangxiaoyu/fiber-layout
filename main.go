@@ -1,19 +1,11 @@
 package main
 
-import (
-	"fiber/internal"
-)
+import "fiber/cmd"
 
+// @title Quick Auth 接口文档
+// @version 1.0
+// @description
+// @license.name MIT
 func main() {
-	if err := internal.InitConfig(); err != nil {
-		return
-	}
-	if err := internal.InitLogger(); err != nil {
-		return
-	}
-	app := internal.NewRouter()
-
-	if err := app.Listen(":3000"); err != nil {
-		return
-	}
+	cmd.Execute()
 }
