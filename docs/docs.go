@@ -19,6 +19,52 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/args/{arg}": {
+            "get": {
+                "description": "返回路劲参数",
+                "tags": [
+                    "fiber-layout"
+                ],
+                "summary": "path arg",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "arg",
+                        "name": "arg",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/bind/{arg}": {
+            "post": {
+                "description": "绑定uri和body参数，并进行参数校验",
+                "tags": [
+                    "fiber-layout"
+                ],
+                "summary": "bind json test",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "arg",
+                        "name": "arg",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
         "/body": {
             "post": {
                 "description": "直接返回请求body内容",
@@ -40,6 +86,20 @@ const docTemplate = `{
                     "fiber-layout"
                 ],
                 "summary": "test error",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/error/wrap": {
+            "get": {
+                "description": "打印wrap error测试",
+                "tags": [
+                    "fiber-layout"
+                ],
+                "summary": "path arg",
                 "responses": {
                     "200": {
                         "description": "OK"

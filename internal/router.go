@@ -1,7 +1,6 @@
 package internal
 
 import (
-	_ "fiber/docs"
 	"fiber/internal/controller"
 	"fiber/internal/middleware"
 	"github.com/gofiber/fiber/v2"
@@ -25,6 +24,7 @@ func NewRouter() *fiber.App {
 	app.Post("/body", controller.GetPostBody)
 	app.Get("/panic", controller.GetPanic)
 	app.Get("/args/:arg", controller.GetArg)
+	app.Post("/bind/:arg", controller.BindJson)
 
 	app.Use(func(c *fiber.Ctx) error { // 404，必须写在所有路由后面
 		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"msg": "no such route"})

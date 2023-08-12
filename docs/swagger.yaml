@@ -5,6 +5,36 @@ info:
   title: fiber-layout 接口文档
   version: "1.0"
 paths:
+  /args/{arg}:
+    get:
+      description: 返回路劲参数
+      parameters:
+      - description: arg
+        in: path
+        name: arg
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+      summary: path arg
+      tags:
+      - fiber-layout
+  /bind/{arg}:
+    post:
+      description: 绑定uri和body参数，并进行参数校验
+      parameters:
+      - description: arg
+        in: path
+        name: arg
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+      summary: bind json test
+      tags:
+      - fiber-layout
   /body:
     post:
       description: 直接返回请求body内容
@@ -21,6 +51,15 @@ paths:
         "200":
           description: OK
       summary: test error
+      tags:
+      - fiber-layout
+  /error/wrap:
+    get:
+      description: 打印wrap error测试
+      responses:
+        "200":
+          description: OK
+      summary: path arg
       tags:
       - fiber-layout
   /hello:

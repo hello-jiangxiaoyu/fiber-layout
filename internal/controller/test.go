@@ -3,8 +3,11 @@ package controller
 import (
 	"errors"
 	"fiber/internal/endpoint/resp"
+	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
 )
+
+var validate = validator.New()
 
 // SayHello
 // @Summary	say hello
@@ -72,9 +75,38 @@ func GetPanic(c *fiber.Ctx) error {
 // @Schemes
 // @Description	返回路劲参数
 // @Tags		fiber-layout
-// @Param		appId		path	string	true	"app id"
+// @Param		arg		path	string	true	"arg"
 // @Success		200
 // @Router		/args/{arg} [get]
 func GetArg(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).SendString(c.Params("arg"))
+}
+
+// BindJson
+// @Summary	bind json test
+// @Schemes
+// @Description	绑定uri和body参数，并进行参数校验
+// @Tags		fiber-layout
+// @Param		arg		path	string	true	"arg"
+// @Success		200
+// @Router		/bind/{arg} [post]
+func BindJson(c *fiber.Ctx) error {
+	type Person struct {
+		Arg  string `json:"-" params:"arg" validate:"required"`
+		Age  int    `json:"age" params:"-"`
+		Name string `json:"name" params:"-" validate:"required"`
+	}
+	var p Person
+	if err := c.ParamsParser(&p); err != nil {
+		return err
+	}
+	if err := c.BodyParser(&p); err != nil {
+		return err
+	}
+
+	if err := validate.Struct(p); err != nil {
+		return err
+	}
+
+	return c.Status(fiber.StatusOK).JSON(p)
 }
