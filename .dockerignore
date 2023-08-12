@@ -1,0 +1,9 @@
+.idea
+.vscode
+data
+
+
+*.log
+*.exec
+*.so
+*.out
