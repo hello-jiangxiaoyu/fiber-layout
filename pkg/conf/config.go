@@ -6,13 +6,28 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-type SystemConfig struct {
-	Svc        Server   `json:"server" yaml:"server"`
-	Log        Log      `json:"log" yaml:"log"`
-	Clickhouse Database `json:"clickhouse" yaml:"clickhouse"`
-	DB         Database `json:"database" yaml:"database"`
-	Redis      Database `json:"redis" yaml:"redis"`
-}
+type (
+	Server struct {
+		Listen         string `json:"listen" yaml:"listen"`
+		IsUpload       bool   `json:"uploadSwitch" yaml:"uploadSwitch"`
+		IsWildcard     bool   `json:"wildcardSwitch" yaml:"wildcardSwitch"`
+		WildcardSuffix string `json:"wildcardSuffix" yaml:"wildcardSuffix"`
+		SessionName    string `json:"sessionName" yaml:"sessionName"`
+		StoreKeyPairs  string `json:"storeKeyPairs" yaml:"storeKeyPairs"`
+	}
+
+	Log struct {
+		Level       string `json:"level" yaml:"level"`
+		Dir         string `json:"dir" yaml:"dir"`
+		IsFullStack bool   `json:"fullStackSwitch" yaml:"fullStackSwitch"`
+	}
+
+	SystemConfig struct {
+		Svc Server   `json:"server" yaml:"server"`
+		Log Log      `json:"log" yaml:"log"`
+		DB  Database `json:"database" yaml:"database"`
+	}
+)
 
 func NewSystemConfig() (*SystemConfig, error) {
 	yamlFile, err := os.ReadFile(GetSystemConfigFileName())

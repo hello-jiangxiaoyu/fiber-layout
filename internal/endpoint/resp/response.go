@@ -1,8 +1,8 @@
 package resp
 
 import (
+	"fiber/pkg/utils"
 	"github.com/gofiber/fiber/v2"
-	"github.com/pkg/errors"
 	"net/http"
 )
 
@@ -31,17 +31,13 @@ func customResponse(c *fiber.Ctx, code int, errCode uint, err error, msg string,
 	isArrayFlag := len(isArray) != 0
 	var responseData any
 	if isArrayFlag {
-		responseData = struct{}{}
-	} else {
 		responseData = []struct{}{}
+	} else {
+		responseData = struct{}{}
 	}
 
-	if err1 := response(c, code, errCode, msg, responseData, 0, isArrayFlag); err1 != nil {
-		if err == nil {
-			return err1
-		}
-		err = errors.WithMessage(err, err1.Error())
-	}
+	err = utils.WithStringError(err, msg)
+	err = utils.WrapError(err, response(c, code, errCode, msg, responseData, 0, isArrayFlag))
 
 	return err
 }

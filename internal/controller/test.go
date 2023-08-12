@@ -2,6 +2,7 @@ package controller
 
 import (
 	"errors"
+	"fiber/internal/endpoint/resp"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -14,7 +15,7 @@ import (
 // @Router		/hello [get]
 func SayHello(c *fiber.Ctx) error {
 	c.Append("Append-Header", "Fiber-Layout")
-	return c.SendString("Hello world!")
+	return resp.SuccessWithData(c, fiber.Map{"hello": "fiber"})
 }
 
 // GetPostBody
@@ -42,6 +43,17 @@ func GetError(c *fiber.Ctx) error {
 	return errors.New("my error response")
 }
 
+// WrapErrorLog
+// @Summary	path arg
+// @Schemes
+// @Description	打印wrap error测试
+// @Tags		fiber-layout
+// @Success		200
+// @Router		/error/wrap [get]
+func WrapErrorLog(c *fiber.Ctx) error {
+	return resp.ErrorUnknown(c, errors.New("new error"), "my msg", true)
+}
+
 // GetPanic
 // @Summary	test panic
 // @Schemes
@@ -53,4 +65,16 @@ func GetPanic(c *fiber.Ctx) error {
 	var pt *int
 	*pt = 1
 	return c.Status(fiber.StatusOK).SendString("ok")
+}
+
+// GetArg
+// @Summary	path arg
+// @Schemes
+// @Description	返回路劲参数
+// @Tags		fiber-layout
+// @Param		appId		path	string	true	"app id"
+// @Success		200
+// @Router		/args/{arg} [get]
+func GetArg(c *fiber.Ctx) error {
+	return c.Status(fiber.StatusOK).SendString(c.Params("arg"))
 }
