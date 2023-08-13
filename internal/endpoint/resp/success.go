@@ -2,7 +2,6 @@ package resp
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"net/http"
 )
 
 func Success(ctx *fiber.Ctx) error {
@@ -16,5 +15,5 @@ func SuccessArray(ctx *fiber.Ctx, total int, data any) error {
 }
 
 func DoNothing(ctx *fiber.Ctx, msg string, isArray ...bool) error {
-	return customResponse(ctx, http.StatusAccepted, CodeSuccess, nil, msg, isArray)
+	return customResponse(ctx, fiber.StatusAccepted, CodeSuccess, nil, msg, isArray)
 }

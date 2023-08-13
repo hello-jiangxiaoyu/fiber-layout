@@ -3,7 +3,6 @@ package resp
 import (
 	"fiber/pkg/utils"
 	"github.com/gofiber/fiber/v2"
-	"net/http"
 )
 
 type Response struct {
@@ -20,7 +19,7 @@ type ArrayResponse struct {
 }
 
 func response(c *fiber.Ctx, code int, errCode uint, msg string, data any, total int, isArray bool) error {
-	c.Locals("code", code)
+	c.Locals("code", errCode)
 	if isArray {
 		return c.Status(code).JSON(&ArrayResponse{Code: errCode, Msg: msg, Total: total, Data: data})
 	}
@@ -44,5 +43,5 @@ func customResponse(c *fiber.Ctx, code int, errCode uint, err error, msg string,
 }
 
 func success(c *fiber.Ctx, data any, total int, isArray bool) error {
-	return response(c, http.StatusOK, CodeSuccess, MsgSuccess, data, total, isArray)
+	return response(c, fiber.StatusOK, CodeSuccess, MsgSuccess, data, total, isArray)
 }

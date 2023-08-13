@@ -120,9 +120,9 @@ func BindJson(c *fiber.Ctx) error {
 // @Success		200
 // @Router		/fast [get]
 func GetFastHttpRequest(c *fiber.Ctx) error {
-	var res any
-	if err := client.Get("http://localhost:8000/", &res); err != nil {
-		return err
+	var res fiber.Map
+	if err := client.Get("http://localhost/api/quick/apps", &res); err != nil {
+		return resp.ErrorSendRequest(c, err, "get fast err")
 	}
 	return c.Status(fiber.StatusOK).JSON(res)
 }
@@ -135,12 +135,12 @@ func GetFastHttpRequest(c *fiber.Ctx) error {
 // @Success		200
 // @Router		/fast [post]
 func PostFastHttpRequest(c *fiber.Ctx) error {
-	var res any
+	var res fiber.Map
 	data := map[string]any{
 		"post": "data",
 	}
 	if err := client.Post("http://localhost:8000/body", &data, &res); err != nil {
-		return err
+		return resp.ErrorSendRequest(c, err, "post fast err")
 	}
 	return c.Status(fiber.StatusOK).JSON(res)
 }

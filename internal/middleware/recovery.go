@@ -13,10 +13,10 @@ import (
 	"time"
 )
 
-func stackInfo(req string, err any, skip int, fullStack bool) string {
+func stackInfo(msg string, err any, skip int, fullStack bool) string {
 	pwd, _ := os.Getwd()
 	pwd = strings.ReplaceAll(pwd, `\`, "/") // handle windows path
-	res := fmt.Sprintf("[Recovery] %s panic recovered: %s\n%v", time.Now().Format("2006-01-02 15:04:05"), req, err)
+	res := fmt.Sprintf("\n[Recovery] panic recovered: %s\n[Error] %v", msg, err)
 	for i := skip; ; i++ {
 		pc, file, line, ok := runtime.Caller(i)
 		if !ok {
@@ -46,7 +46,7 @@ func Recovery() fiber.Handler {
 					}
 				}
 
-				req := c.Method() + " " + c.Path()
+				req := fmt.Sprintf("requestID:%v method:%s path:%s", c.Locals(fiber.HeaderXRequestID), c.Method(), c.Path())
 				global.Log.Error(stackInfo(req, err, 3, global.Config.Log.IsFullStack))
 				if !brokenPipe {
 					_ = resp.ErrorPanic(c)

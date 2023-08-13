@@ -1,14 +1,16 @@
 package resp
 
-import "net/http"
+import (
+	"github.com/gofiber/fiber/v2"
+)
 
 const (
 	MsgSuccess = ""
 )
 
 const (
-	CodeSuccess = http.StatusOK
-	CodeAccept  = http.StatusAccepted
+	CodeSuccess = fiber.StatusOK
+	CodeAccept  = fiber.StatusAccepted
 
 	CodeNoSuchRoute = 1000 // 系统相关错误码
 	CodeRequestPara = 1001
@@ -28,4 +30,5 @@ const (
 	CodeUnknown     = 5001
 	CodeNotFound    = 5002
 	CodeSaveSession = 5003
+	CodeSendRequest = 5004
 )

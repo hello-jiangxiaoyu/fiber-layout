@@ -12,11 +12,6 @@ import (
 // RequestLogger middleware to logs request/response
 func RequestLogger() fiber.Handler {
 	return func(c *fiber.Ctx) error {
-		if global.AccessLog == nil {
-			fmt.Println("access log is nil")
-			return c.Next()
-		}
-
 		start := time.Now()
 		err := c.Next() // 继续执行后面的handler
 
@@ -26,14 +21,26 @@ func RequestLogger() fiber.Handler {
 }
 
 func zapLog(c *fiber.Ctx, start time.Time, err any) {
-	code := c.Locals("code").(int)
-	requestID := c.Locals(fiber.HeaderXRequestID).(string)
+	if global.AccessLog == nil {
+		fmt.Println("access log is nil")
+		return
+	}
+
+	var intCode uint
+	if code := c.Locals("code"); code != nil {
+		intCode, _ = code.(uint)
+	}
+	requestID := ""
+	if id := c.Locals(fiber.HeaderXRequestID); id != nil {
+		requestID, _ = id.(string)
+	}
+
 	global.AccessLog.Info("",
 		zap.String("ts", time.Now().Format(time.RFC3339)),
 		zap.Int("pid", os.Getpid()),
 		zap.String("request_id", requestID),
 		zap.Int("status", c.Response().StatusCode()),
-		zap.Int("code", code),
+		zap.Uint("code", intCode),
 		zap.String("method", c.Method()),
 		zap.String("path", c.Path()),
 		zap.String("route", c.Route().Path),
