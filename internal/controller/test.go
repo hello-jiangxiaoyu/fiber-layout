@@ -2,6 +2,7 @@ package controller
 
 import (
 	"errors"
+	"fiber/internal/controller/internal"
 	"fiber/internal/endpoint/resp"
 	"fiber/pkg/client"
 	"github.com/go-playground/validator/v10"
@@ -10,6 +11,14 @@ import (
 
 var validate = validator.New()
 
+type TestRoute struct {
+	internal.Api
+}
+
+func NewTestRoute() *TestRoute {
+	return &TestRoute{}
+}
+
 // SayHello
 // @Summary	say hello
 // @Schemes
@@ -17,7 +26,7 @@ var validate = validator.New()
 // @Tags		fiber-layout
 // @Success		200
 // @Router		/ [get]
-func SayHello(c *fiber.Ctx) error {
+func (t TestRoute) SayHello(c *fiber.Ctx) error {
 	c.Append("Append-Header", "Fiber-Layout")
 	return resp.SuccessWithData(c, fiber.Map{"hello": "fiber"})
 }
@@ -29,7 +38,7 @@ func SayHello(c *fiber.Ctx) error {
 // @Tags		fiber-layout
 // @Success		200
 // @Router		/body [post]
-func GetPostBody(c *fiber.Ctx) error {
+func (t TestRoute) GetPostBody(c *fiber.Ctx) error {
 	return c.Send(c.Body())
 }
 
@@ -40,7 +49,7 @@ func GetPostBody(c *fiber.Ctx) error {
 // @Tags		fiber-layout
 // @Success		200
 // @Router		/error [get]
-func GetError(c *fiber.Ctx) error {
+func (t TestRoute) GetError(c *fiber.Ctx) error {
 	if err := c.Status(fiber.StatusOK).SendString("error"); err != nil {
 		return err
 	}
@@ -54,7 +63,7 @@ func GetError(c *fiber.Ctx) error {
 // @Tags		fiber-layout
 // @Success		200
 // @Router		/error/wrap [get]
-func WrapErrorLog(c *fiber.Ctx) error {
+func (t TestRoute) WrapErrorLog(c *fiber.Ctx) error {
 	return resp.ErrorUnknown(c, errors.New("new error"), "my msg", true)
 }
 
@@ -65,7 +74,7 @@ func WrapErrorLog(c *fiber.Ctx) error {
 // @Tags		fiber-layout
 // @Success		200
 // @Router		/panic [get]
-func GetPanic(c *fiber.Ctx) error {
+func (t TestRoute) GetPanic(c *fiber.Ctx) error {
 	var pt *int
 	*pt = 1
 	return c.Status(fiber.StatusOK).SendString("ok")
@@ -79,7 +88,7 @@ func GetPanic(c *fiber.Ctx) error {
 // @Param		arg		path	string	true	"arg"
 // @Success		200
 // @Router		/args/{arg} [get]
-func GetArg(c *fiber.Ctx) error {
+func (t TestRoute) GetArg(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).SendString(c.Params("arg"))
 }
 
@@ -91,22 +100,15 @@ func GetArg(c *fiber.Ctx) error {
 // @Param		arg		path	string	true	"arg"
 // @Success		200
 // @Router		/bind/{arg} [post]
-func BindJson(c *fiber.Ctx) error {
+func (t TestRoute) BindJson(c *fiber.Ctx) error {
 	type Person struct {
 		Arg  string `json:"-" params:"arg" validate:"required"`
 		Age  int    `json:"age" params:"-"`
 		Name string `json:"name" params:"-" validate:"required"`
 	}
 	var p Person
-	if err := c.ParamsParser(&p); err != nil {
-		return resp.ErrorUnknown(c, err, "bind uri err")
-	}
-	if err := c.BodyParser(&p); err != nil {
-		return resp.ErrorUnknown(c, err, "bind json err")
-	}
-
-	if err := validate.Struct(p); err != nil {
-		return resp.ErrorUnknown(c, err, "validate err")
+	if err := t.SetCtx(c).BindUriAndJson(&p).Error; err != nil {
+		return resp.ErrorRequest(c, err, "bind test err")
 	}
 
 	return resp.SuccessWithData(c, &p)
@@ -119,7 +121,7 @@ func BindJson(c *fiber.Ctx) error {
 // @Tags		fiber-layout
 // @Success		200
 // @Router		/fast [get]
-func GetFastHttpRequest(c *fiber.Ctx) error {
+func (t TestRoute) GetFastHttpRequest(c *fiber.Ctx) error {
 	var res fiber.Map
 	if err := client.Get("http://localhost/api/quick/apps", &res); err != nil {
 		return resp.ErrorSendRequest(c, err, "get fast err")
@@ -134,7 +136,7 @@ func GetFastHttpRequest(c *fiber.Ctx) error {
 // @Tags		fiber-layout
 // @Success		200
 // @Router		/fast [post]
-func PostFastHttpRequest(c *fiber.Ctx) error {
+func (t TestRoute) PostFastHttpRequest(c *fiber.Ctx) error {
 	var res fiber.Map
 	data := map[string]any{
 		"post": "data",

@@ -18,8 +18,3 @@ func ErrorForbidden(ctx *fiber.Ctx, msg string, isArray ...bool) error {
 func ErrorNoLogin(ctx *fiber.Ctx, isArray ...bool) error {
 	return customResponse(ctx, fiber.StatusUnauthorized, CodeNotLogin, nil, "user not login", isArray)
 }
-
-// ErrorNoSuchRoute 用户未登录
-func ErrorNoSuchRoute(ctx *fiber.Ctx, isArray ...bool) error {
-	return customResponse(ctx, fiber.StatusNotFound, CodeNoRoute, nil, "no such api route", isArray)
-}

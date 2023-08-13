@@ -21,17 +21,24 @@ func NewRouter() *fiber.App {
 
 	addMiddlewareDemo(app) // 添加中间件
 
-	app.Get("/", controller.SayHello)
-	app.Get("/error", controller.GetError)
-	app.Get("/error/wrap", controller.WrapErrorLog)
-	app.Post("/body", controller.GetPostBody)
-	app.Get("/panic", controller.GetPanic)
-	app.Get("/args/:arg", controller.GetArg)
-	app.Post("/bind/:arg", controller.BindJson)
-	app.Get("/fast", controller.GetFastHttpRequest)
-	app.Post("/fast", controller.PostFastHttpRequest)
-	app.Use(func(c *fiber.Ctx) error { // 404，必须写在所有路由后面
-		return resp.ErrorNoSuchRoute(c)
+	t := controller.NewTestRoute()
+
+	app.Get("/", t.SayHello)
+	app.Get("/error", t.GetError)
+	app.Get("/error/wrap", t.WrapErrorLog)
+	app.Post("/body", t.GetPostBody)
+	app.Get("/panic", t.GetPanic)
+	app.Get("/args/:arg", t.GetArg)
+	app.Post("/bind/:arg", t.BindJson)
+	app.Get("/fast", t.GetFastHttpRequest)
+	app.Post("/fast", t.PostFastHttpRequest)
+
+	app.Use(func(c *fiber.Ctx) error {
+		err := c.Next()
+		if code := c.Locals("code"); code != nil {
+			return err
+		}
+		return resp.ErrorNoSuchRoute(c, err)
 	})
 
 	return app
