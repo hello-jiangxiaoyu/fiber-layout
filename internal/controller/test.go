@@ -99,17 +99,17 @@ func BindJson(c *fiber.Ctx) error {
 	}
 	var p Person
 	if err := c.ParamsParser(&p); err != nil {
-		return err
+		return resp.ErrorUnknown(c, err, "bind uri err")
 	}
 	if err := c.BodyParser(&p); err != nil {
-		return err
+		return resp.ErrorUnknown(c, err, "bind json err")
 	}
 
 	if err := validate.Struct(p); err != nil {
-		return err
+		return resp.ErrorUnknown(c, err, "validate err")
 	}
 
-	return c.Status(fiber.StatusOK).JSON(p)
+	return resp.SuccessWithData(c, &p)
 }
 
 // GetFastHttpRequest
@@ -124,7 +124,7 @@ func GetFastHttpRequest(c *fiber.Ctx) error {
 	if err := client.Get("http://localhost/api/quick/apps", &res); err != nil {
 		return resp.ErrorSendRequest(c, err, "get fast err")
 	}
-	return c.Status(fiber.StatusOK).JSON(res)
+	return resp.SuccessWithData(c, &res)
 }
 
 // PostFastHttpRequest
@@ -142,5 +142,5 @@ func PostFastHttpRequest(c *fiber.Ctx) error {
 	if err := client.Post("http://localhost:8000/body", &data, &res); err != nil {
 		return resp.ErrorSendRequest(c, err, "post fast err")
 	}
-	return c.Status(fiber.StatusOK).JSON(res)
+	return resp.SuccessWithData(c, &res)
 }

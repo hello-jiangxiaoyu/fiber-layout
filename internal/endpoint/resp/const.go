@@ -15,6 +15,7 @@ const (
 	CodeNoSuchRoute = 1000 // 系统相关错误码
 	CodeRequestPara = 1001
 	CodeForbidden   = 1002
+	CodeNoRoute     = 1003
 
 	CodeNoSuchHost   = 2000 // 业务相关错误码
 	CodeNotLogin     = 2001

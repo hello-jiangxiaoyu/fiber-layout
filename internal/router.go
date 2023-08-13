@@ -2,6 +2,7 @@ package internal
 
 import (
 	"fiber/internal/controller"
+	"fiber/internal/endpoint/resp"
 	"fiber/internal/middleware"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/monitor"
@@ -30,7 +31,7 @@ func NewRouter() *fiber.App {
 	app.Get("/fast", controller.GetFastHttpRequest)
 	app.Post("/fast", controller.PostFastHttpRequest)
 	app.Use(func(c *fiber.Ctx) error { // 404，必须写在所有路由后面
-		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"msg": "no such route"})
+		return resp.ErrorNoSuchRoute(c)
 	})
 
 	return app
