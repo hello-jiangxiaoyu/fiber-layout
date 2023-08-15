@@ -5,11 +5,8 @@ import (
 	"fiber/internal/controller/internal"
 	"fiber/internal/endpoint/resp"
 	"fiber/pkg/client"
-	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
 )
-
-var validate = validator.New()
 
 type TestRoute struct {
 	internal.Api
