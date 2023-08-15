@@ -3,7 +3,7 @@ package internal
 import (
 	"fiber/internal/controller"
 	"fiber/internal/endpoint/resp"
-	"fiber/internal/middleware"
+	"fiber/pkg/middleware"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/monitor"
 	"github.com/gofiber/fiber/v2/middleware/pprof"
