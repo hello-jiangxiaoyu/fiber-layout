@@ -9,16 +9,6 @@ func ErrorUnknown(ctx *fiber.Ctx, err error, respMsg string, isArray ...bool) er
 	return customResponse(ctx, fiber.StatusInternalServerError, CodeUnknown, err, respMsg, isArray)
 }
 
-// ErrorSqlModify SQL修改失败
-func ErrorSqlModify(ctx *fiber.Ctx, err error, respMsg string, isArray ...bool) error {
-	return customResponse(ctx, fiber.StatusInternalServerError, CodeSqlModify, err, respMsg, isArray)
-}
-
-// ErrorSelect 数据库查询错误
-func ErrorSelect(ctx *fiber.Ctx, err error, respMsg string, isArray ...bool) error {
-	return customResponse(ctx, fiber.StatusInternalServerError, CodeSqlSelect, err, respMsg, isArray)
-}
-
 // ErrorNotFound 资源未找到
 func ErrorNotFound(ctx *fiber.Ctx, err error, respMsg string, isArray ...bool) error {
 	return customResponse(ctx, fiber.StatusInternalServerError, CodeNotFound, err, respMsg, isArray)

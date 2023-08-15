@@ -105,7 +105,7 @@ func (t TestRoute) BindJson(c *fiber.Ctx) error {
 	}
 	var p Person
 	if err := t.SetCtx(c).BindUriAndJson(&p).Error; err != nil {
-		return resp.ErrorRequest(c, err, "bind test err")
+		return resp.ErrorRequest(c, err)
 	}
 
 	return resp.SuccessWithData(c, &p)
