@@ -4,6 +4,7 @@ import (
 	"fiber/internal/controller"
 	"fiber/internal/endpoint/resp"
 	"fiber/pkg/middleware"
+	"github.com/bytedance/sonic"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/monitor"
 	"github.com/gofiber/fiber/v2/middleware/pprof"
@@ -17,6 +18,8 @@ func NewRouter() *fiber.App {
 		StrictRouting: true, // 例如"/foo"和"/foo/" 认为是不同的路由
 		ServerHeader:  "Fiber-Layout",
 		AppName:       "v0.0.1",
+		JSONDecoder:   sonic.Unmarshal,
+		JSONEncoder:   sonic.Marshal,
 	})
 
 	addMiddlewareDemo(app) // 添加中间件
